@@ -1,0 +1,21 @@
+images {
+  image: "/swip_witch/images/playerShip2_blue.png"
+}
+images {
+  image: "/swip_witch/images/powerupBlue_shield.png"
+}
+images {
+  image: "/swip_witch/images/purple.png"
+}
+images {
+  image: "/swip_witch/images/shield1.png"
+}
+images {
+  image: "/swip_witch/images/ufoYellow.png"
+}
+images {
+  image: "/swip_witch/images/littlewitch.png"
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0
