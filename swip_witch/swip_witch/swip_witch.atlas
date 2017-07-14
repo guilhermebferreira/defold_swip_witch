@@ -16,6 +16,9 @@ images {
 images {
   image: "/swip_witch/images/littlewitch.png"
 }
+images {
+  image: "/swip_witch/images/potion.png"
+}
 margin: 0
 extrude_borders: 2
 inner_padding: 0

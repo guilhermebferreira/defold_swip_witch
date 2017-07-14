@@ -48,7 +48,7 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "tile_set: \"/swip_witch/swip_witch.atlas\"\n"
-  "default_animation: \"ufoYellow\"\n"
+  "default_animation: \"potion\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
