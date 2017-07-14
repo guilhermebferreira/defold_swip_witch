@@ -1,0 +1,6 @@
+.externalToolBuilders
+.DS_Store
+.lock-wscript
+build
+*.apk
+.project

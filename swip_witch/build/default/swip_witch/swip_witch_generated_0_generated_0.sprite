@@ -1,4 +1,0 @@
-tile_set: "/swip_witch/swip_witch.atlas"
-default_animation: "purple"
-material: "/builtins/materials/sprite.material"
-blend_mode: BLEND_MODE_ALPHA
