@@ -1,6 +1,7 @@
 local backgrounds = { "bg1", "bg2", "bg3" }
 local background_size = 256 * 3
 local coin_spawn_interval = 0.15
+local enemy_spawn_interval = 2
 local powerup_spawn_interval = 6
 local magnet_lifetime = 10
 
@@ -28,12 +29,15 @@ local totalSwipeDistanceDown
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	math.randomseed(os.time())
+	self.coins_collected = 0
 	self.speed = 400
 	self.powerups = {}
+	self.enemys = {}
 	self.coins = {}
 	self.coins_to_collect = {}
 	self.coin_spawn_timer = coin_spawn_interval
 	self.powerup_spawn_timer = powerup_spawn_interval
+	self.enemy_spawn_timer = enemy_spawn_interval
 	self.player_direction = vmath.vector3()
 	self.magnet_timer = 0
 	msg.post("coinmagnet", "disable")
@@ -45,6 +49,10 @@ function final(self)
 end
 
 function update(self, dt)
+	
+	
+	msg.post("@render:", "draw_text", { text = self.coins_collected, position = vmath.vector3(20, 30, 0) } )
+	
 	-- move background
 	for _,bg in pairs(backgrounds) do
 		local pos = go.get_position(bg)
@@ -76,6 +84,17 @@ function update(self, dt)
 			self.powerups[powerup] = nil
 		end
 	end
+
+	-- move enemy
+	for enemy,_ in pairs(self.enemys) do
+		local pos = go.get_position(enemy)
+		pos = pos + vmath.vector3(0, -self.speed * dt, 0)
+		go.set_position(pos, enemy)
+		if pos.y <= -50 then
+			go.delete(enemy)
+			self.powerups[enemy] = nil
+		end
+	end
 	
 	-- spawn coins
 	self.coin_spawn_timer = self.coin_spawn_timer - dt
@@ -90,6 +109,14 @@ function update(self, dt)
 	if self.powerup_spawn_timer <= 0 then
 		self.powerup_spawn_timer = powerup_spawn_interval
 		local id = factory.create("#powerupfactory", vmath.vector3(math.random(20, 620), 1500, 0))
+		self.powerups[id] = true
+	end
+	
+	-- spawn enemy
+	self.enemy_spawn_timer = self.enemy_spawn_timer - dt
+	if self.enemy_spawn_timer <= 0 then
+		self.enemy_spawn_timer = enemy_spawn_interval
+		local id = factory.create("#enemyfactory", vmath.vector3(math.random(20, 620), 1500, 0))
 		self.powerups[id] = true
 	end
 	
@@ -120,6 +147,8 @@ function update(self, dt)
 		end
 	end
 	
+	
+	
 	-- decrease magnet lifetime if active
 	if self.magnet_timer > 0 then
 		self.magnet_timer = self.magnet_timer - dt
@@ -134,6 +163,8 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		if message.group == hash("coin") then
 			self.coins[message.other_id] = nil
+			--count collected
+			self.coins_collected = self.coins_collected + 1
 			if self.magnet_timer > 0 then
 				self.coins_to_collect[message.other_id] = true
 				-- disable the collision object on the coin
