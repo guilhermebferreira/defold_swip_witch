@@ -17,6 +17,8 @@ local yDistance
 go.property("minSwipeDistance", 40)
 go.property("minSwipeTime", 0.6)
 
+local doingSwap = 0
+local swapLapse = 20
 local bDoingTouch
 local totalSwipeDistanceLeft
 local totalSwipeDistanceRight
@@ -94,7 +96,19 @@ function update(self, dt)
 	-- move player
 	local player_pos = go.get_position() + self.player_direction * 200 * dt
 	go.set_position(player_pos)
-
+	
+	if doingSwap > 0 then
+		print("doingSwap")
+		print(doingSwap)
+		doingSwap = doingSwap-1
+		if doingSwap == 0 then
+			self.player_direction.x = 0
+		end
+	end
+	
+		
+	
+	
 	-- collect coins
 	for coin,_ in pairs(self.coins_to_collect) do
 		local coin_pos = go.get_position(coin)
@@ -157,6 +171,7 @@ function on_input(self, action_id, action)
   if action_id == hash("click") then
     if action.pressed then
       bDoingTouch = true
+      doingSwap = swapLapse
       beginX = action.x
       beginY = action.y
       startTime = os.clock()
@@ -167,6 +182,7 @@ function on_input(self, action_id, action)
       	checkSwipeDirection(self);
       end
       bDoingTouch = false
+      --self.player_direction.x = 0
     end
   end
 end
@@ -185,11 +201,16 @@ function checkSwipeDirection(self)
         totalSwipeDistanceLeft = beginX - endX
         if totalSwipeDistanceLeft > self.minSwipeDistance then
           print("Swiped Left")
+          
+          self.player_direction.x = -1
+           
         end
       else
         totalSwipeDistanceRight = endX - beginX
         if totalSwipeDistanceRight > self.minSwipeDistance then
           print("Swiped Right")
+          self.player_direction.x = 1
+          
         end
       end
     else
@@ -205,5 +226,9 @@ function checkSwipeDirection(self)
         end
        end
     end
-  end
 end
+
+end
+
+
+  
