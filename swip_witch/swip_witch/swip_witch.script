@@ -32,6 +32,7 @@ local totalSwipeDistanceDown
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	msg.post("camera", "acquire_camera_focus") --part of shake the camera
 	math.randomseed(os.time())
 	self.coins_collected = 0
 	self.life = 10 --life is inscresse with potion and decresse when get damage
@@ -51,6 +52,7 @@ end
 
 function final(self)
 	msg.post(".", "release_input_focus")
+	msg.post("camera", "release_camera_focus") --part of shake the camera
 end
 
 function update(self, dt)
@@ -306,6 +308,9 @@ end
 function get_hited(self)
 	--do things
 	self.life = self.life - enemy_damage
+	--shake the screen to visual impact
+	msg.post("camera#baturinsky_shake", "shake", { shake = (enemy_damage*10) })
+	
 end
 
   
