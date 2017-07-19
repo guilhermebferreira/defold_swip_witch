@@ -299,14 +299,12 @@ end
 end
 
 function get_point(self)
-	--do things
 	self.coins_collected = self.coins_collected + 1
 	self.life = self.life + 1
 end
 
 
 function get_hited(self)
-	--do things
 	self.life = self.life - enemy_damage
 	--shake the screen to visual impact
 	msg.post("camera#baturinsky_shake", "shake", { shake = (enemy_damage*10) })
