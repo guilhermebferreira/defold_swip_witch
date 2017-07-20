@@ -132,15 +132,16 @@ function update(self, dt)
 	end
 	
 	-- move player
+	if self.speed > 0 then
+		local player_pos = go.get_position() + self.player_direction * swapSpeed * dt
+		go.set_position(player_pos)
 	
-	local player_pos = go.get_position() + self.player_direction * swapSpeed * dt
-	go.set_position(player_pos)
-	
-	if doingSwap > 0 then
-		-- keep moving
-		doingSwap = doingSwap-1
-		if doingSwap <= 0 then
-			self.player_direction.x = 0
+		if doingSwap > 0 then
+			-- keep moving
+			doingSwap = doingSwap-1
+			if doingSwap <= 0 then
+				self.player_direction.x = 0
+			end
 		end
 	end
 	
@@ -308,6 +309,12 @@ function get_hited(self)
 	self.life = self.life - enemy_damage
 	--shake the screen to visual impact
 	msg.post("camera#baturinsky_shake", "shake", { shake = (enemy_damage*10) })
+	
+	--check if she is alive yet
+	if self.life <= 0 then
+		self.speed = 0
+	end
+	
 	
 end
 
