@@ -37,6 +37,8 @@ function init(self)
 	self.coins_collected = 0
 	self.life = 10 --life is inscresse with potion and decresse when get damage
 	self.speed = 400
+	self.t = 0 --time
+	self.d = 0 --distance
 	self.powerups = {}
 	self.enemys = {}
 	self.coins = {}
@@ -63,6 +65,8 @@ function update(self, dt)
 	msg.post("@render:", "draw_text", { text = "points: ", position = vmath.vector3(20, 30, 0) } )
 	msg.post("@render:", "draw_text", { text = self.coins_collected, position = vmath.vector3(100, 30, 0) } )
 	
+	update_time_distance(self, dt)
+
 	-- move background
 	for _,bg in pairs(backgrounds) do
 		local pos = go.get_position(bg)
@@ -315,7 +319,11 @@ function get_hited(self)
 		self.speed = 0
 	end
 	
-	
+end
+
+function update_time_distance(self, dt)
+	self.d = self.d + math.floor(dt*self.speed)
+	self.t = self.t + dt
 end
 
   
