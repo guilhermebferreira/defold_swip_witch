@@ -6,6 +6,7 @@ local powerup_spawn_interval = 6
 local magnet_lifetime = 10
 
 local enemy_damage = 10
+local bloco_damage = 1
 local max_life = 50
 
 
@@ -30,7 +31,9 @@ local totalSwipeDistanceRight
 local totalSwipeDistanceUp
 local totalSwipeDistanceDown
 
-local wall_distance = 100
+local wall_distance = 200
+local wall_spacing = 60
+local wall_blocks_quant = 10
 local wall_next = wall_distance
 
 function init(self)
@@ -40,12 +43,12 @@ function init(self)
 	self.coins_collected = 0
 	self.life = 10 --life is inscresse with potion and decresse when get damage
 	self.speed = 400
-	self.t = 0 --time
-	self.d = 0 --distance
+    self.time = 0 --time
+    self.distance = 0 --distance
+	self.blocos = {}
 	self.powerups = {}
 	self.enemys = {}
 	self.coins = {}
-	self.blocos = {}
 	self.coins_to_collect = {}
 	self.coin_spawn_timer = coin_spawn_interval
 	self.powerup_spawn_timer = powerup_spawn_interval
@@ -70,7 +73,7 @@ function update(self, dt)
 	msg.post("@render:", "draw_text", { text = self.coins_collected, position = vmath.vector3(100, 30, 0) } )
 	
 	update_time_distance(self, dt)
-
+	
 	-- move background
 	for _,bg in pairs(backgrounds) do
 		local pos = go.get_position(bg)
@@ -115,17 +118,6 @@ function update(self, dt)
 		end
 	end
 	
-	--spawn blocos
-	if self.d >= wall_next then
-		print("block spawn")
-		print(self.d)
-		print("wall_next")
-		print(wall_next)
-		local id = factory.create("#blocofactory", vmath.vector3(100, 1500, 0), nil, {}, 0.25)
-		self.blocos[id] = true
-		wall_next = wall_next + wall_distance
-	end
-	
 	-- spawn coins
 	self.coin_spawn_timer = self.coin_spawn_timer - dt
 	if self.coin_spawn_timer <= 0 then
@@ -150,20 +142,45 @@ function update(self, dt)
 		self.enemys[id] = true
 	end
 	
-	-- move player
-	if self.speed > 0 then
-		local player_pos = go.get_position() + self.player_direction * swapSpeed * dt
-		go.set_position(player_pos)
-	
-		if doingSwap > 0 then
-			-- keep moving
-			doingSwap = doingSwap-1
-			if doingSwap <= 0 then
-				self.player_direction.x = 0
-			end
-		end
+	--spawn blocos
+
+ 	if self.distance >= wall_next then
+
+    	for i=wall_blocks_quant,1,-1 do
+      	local id = factory.create("#blocofactory", vmath.vector3((wall_spacing*i), 1500, 0), nil, {}, 0.5)
+      	self.blocos[id] = true
+          print("bloco factory")
+          print(id)
+    	end
+		wall_next = wall_next + wall_distance
 	end
 	
+	-- move blocks
+  for bloco,_ in pairs(self.blocos) do
+    local pos = go.get_position(bloco)
+    pos = pos + vmath.vector3(0, -self.speed * dt, 0)
+    go.set_position(pos, bloco)
+    if pos.y <= -50 then
+      go.delete(bloco)
+      self.blocos[bloco] = nil
+    end
+  end
+	
+
+
+  -- move player
+  if self.speed > 0 then
+    local player_pos = go.get_position() + self.player_direction * swapSpeed * dt
+    go.set_position(player_pos)
+
+    if doingSwap > 0 then
+      -- keep moving
+      doingSwap = doingSwap-1
+      if doingSwap <= 0 then
+        self.player_direction.x = 0
+      end
+    end
+  end
 		
 	
 	
@@ -220,19 +237,16 @@ function on_message(self, message_id, message, sender)
 		
 		elseif message.group == hash("enemy") then
 			print("Enemy hited")
-			get_hited(self)
-			
-			--self.enemys[message.other_id] = nil
+			get_hited(self, enemy_damage)
 			
 			self.enemys[message.other_id] = nil
 			go.delete(message.other_id)
+		elseif message.group == hash("bloco") then
+			print("Block hited")
+			get_hited(self, bloco_damage)
 			
-			--go.delete(message.other_id)
-			--go.delete(coin)
-			
-			--local url = msg.url(message.other_id)
-			--url.fragment = "collisionobject"
-			--msg.post(url, "disable")
+			self.blocos[message.other_id] = nil
+			go.delete(message.other_id)
 		end
 	end
 end
@@ -319,26 +333,25 @@ end
 end
 
 function get_point(self)
+	--do things
 	self.coins_collected = self.coins_collected + 1
 	self.life = self.life + 1
 end
 
 
-function get_hited(self)
-	self.life = self.life - enemy_damage
+function get_hited(self, damage)
+	--do things
+	self.life = self.life - damage
 	--shake the screen to visual impact
-	msg.post("camera#baturinsky_shake", "shake", { shake = (enemy_damage*10) })
-	
-	--check if she is alive yet
+	msg.post("camera#baturinsky_shake", "shake", { shake = (damage*10) })
+	  --check if she is alive yet
 	if self.life <= 0 then
-		self.speed = 0
+    	self.speed = 0
 	end
 	
 end
 
 function update_time_distance(self, dt)
-	self.d = self.d + math.floor(dt*self.speed)
-	self.t = self.t + dt
+  self.distance = self.distance + math.floor(dt*self.speed)
+  self.time = self.time + dt
 end
-
-  

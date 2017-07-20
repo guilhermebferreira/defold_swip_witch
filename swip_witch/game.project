@@ -18,8 +18,8 @@ variable_dt = 1
 [physics]
 scale = 0.02
 debug = 0
-max_collisions = 256
-max_contacts = 256
+max_collisions = 512
+max_contacts = 512
 gravity_y = -100
 
 [script]
@@ -46,4 +46,7 @@ bundle_identifier = com.britzl.publicexamples.swip_witch
 
 [ios]
 bundle_identifier = com.britzl.publicexamples.swip_witch
+
+[factory]
+max_count = 256
 
