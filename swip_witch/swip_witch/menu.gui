@@ -69,7 +69,7 @@ nodes {
   }
   size {
     x: 150.0
-    y: 45.0
+    y: 100.0
     z: 0.0
     w: 1.0
   }
@@ -91,16 +91,17 @@ nodes {
   layer: ""
   inherit_alpha: true
   slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
+    x: 5.0
+    y: 5.0
+    z: 5.0
+    w: 5.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
   overridden_fields: 4
+  overridden_fields: 22
   overridden_fields: 38
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
@@ -168,6 +169,15 @@ nodes {
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+}
+layers {
+  name: "below"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "above"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

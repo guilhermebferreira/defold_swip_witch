@@ -1,34 +1,23 @@
 function init(self)
-	-- Add initialization code here
-	-- Remove this function if not needed
+	print("init menu")
 	msg.post(".", "acquire_input_focus")
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
+	print("final menu")
 	msg.post(".", "release_input_focus")
 end
 
-function update(self, dt)
-	-- Add update code here
-	-- Remove this function if not needed
-end
-
-function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Remove this function if not needed
-end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here
-	-- Remove this function if not needed
+	print("on_input menu")
+	if(action.pressed) then
+		print("action pressed")
+	end
+	
 	if action.pressed and gui.pick_node(gui.get_node("play/bg"), action.x, action.y) then
+		print("click play")
 		msg.post("controller:/controller", "show_game")
 	end
 end
 
-function on_reload(self)
-	-- Add input-handling code here
-	-- Remove this function if not needed
-end
