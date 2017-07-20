@@ -345,6 +345,7 @@ function get_hited(self, damage, shake)
 	  --check if she is alive yet
 	if self.life <= 0 then
     	self.speed = 0
+    	msg.post("controller:/controller", "show_menu")
 	end
 	
 end

@@ -3,7 +3,7 @@ title = Swip Witch
 custom_resources = 
 
 [bootstrap]
-main_collection = /swip_witch/swip_witch.collectionc
+main_collection = /swip_witch/controller.collectionc
 render = /builtins/render/default.renderc
 
 [input]
