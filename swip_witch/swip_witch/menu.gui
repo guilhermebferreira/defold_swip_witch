@@ -1,4 +1,4 @@
-script: ""
+script: "/swip_witch/menu.gui_script"
 textures {
   name: "swip_witch"
   texture: "/swip_witch/swip_witch.atlas"
