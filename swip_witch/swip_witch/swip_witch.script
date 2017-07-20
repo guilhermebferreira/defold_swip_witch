@@ -30,6 +30,9 @@ local totalSwipeDistanceRight
 local totalSwipeDistanceUp
 local totalSwipeDistanceDown
 
+local wall_distance = 100
+local wall_next = wall_distance
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	msg.post("camera", "acquire_camera_focus") --part of shake the camera
@@ -42,6 +45,7 @@ function init(self)
 	self.powerups = {}
 	self.enemys = {}
 	self.coins = {}
+	self.blocos = {}
 	self.coins_to_collect = {}
 	self.coin_spawn_timer = coin_spawn_interval
 	self.powerup_spawn_timer = powerup_spawn_interval
@@ -109,6 +113,17 @@ function update(self, dt)
 			go.delete(enemy)
 			self.enemys[enemy] = nil
 		end
+	end
+	
+	--spawn blocos
+	if self.d >= wall_next then
+		print("block spawn")
+		print(self.d)
+		print("wall_next")
+		print(wall_next)
+		local id = factory.create("#blocofactory", vmath.vector3(100, 1500, 0), nil, {}, 0.25)
+		self.blocos[id] = true
+		wall_next = wall_next + wall_distance
 	end
 	
 	-- spawn coins
