@@ -1,6 +1,7 @@
 local backgrounds = { "bg1", "bg2", "bg3" }
 local background_size = 256 * 3
 local coin_spawn_interval = 0.15
+local block_spawn_interval = 0.5
 local enemy_spawn_interval = 2
 local powerup_spawn_interval = 6
 local magnet_lifetime = 10
@@ -31,7 +32,7 @@ local totalSwipeDistanceRight
 local totalSwipeDistanceUp
 local totalSwipeDistanceDown
 
-local wall_distance = 200
+local wall_distance = 300
 local wall_spacing = 60
 local wall_blocks_quant = 10
 local wall_next = wall_distance
@@ -118,6 +119,7 @@ function update(self, dt)
 		end
 	end
 	
+	
 	-- spawn coins
 	self.coin_spawn_timer = self.coin_spawn_timer - dt
 	if self.coin_spawn_timer <= 0 then
@@ -143,14 +145,14 @@ function update(self, dt)
 	end
 	
 	--spawn blocos
-
+ 
  	if self.distance >= wall_next then
 
     	for i=wall_blocks_quant,1,-1 do
-      	local id = factory.create("#blocofactory", vmath.vector3((wall_spacing*i), 1500, 0), nil, {}, 0.5)
-      	self.blocos[id] = true
-          print("bloco factory")
-          print(id)
+			if math.random(0, 3) > 0 then
+      		local id = factory.create("#blocofactory", vmath.vector3((wall_spacing*i), 1500, 0), nil, {}, 0.5)
+      		self.blocos[id] = true
+			end
     	end
 		wall_next = wall_next + wall_distance
 	end
@@ -180,14 +182,12 @@ function update(self, dt)
         self.player_direction.x = 0
       end
     end
-  end
-		
-	
-	
+
 	-- collect coins
 	for coin,_ in pairs(self.coins_to_collect) do
 		local coin_pos = go.get_position(coin)
 		local delta = player_pos - coin_pos
+		
 		go.set_position(coin_pos + delta * 5 * dt, coin)
 		if vmath.length(delta) < 30 then
 			go.delete(coin)
@@ -195,9 +195,7 @@ function update(self, dt)
 		end
 	end
 	
-	
-	
-	 
+  end
 	
 	
 	-- decrease magnet lifetime if active
@@ -237,13 +235,13 @@ function on_message(self, message_id, message, sender)
 		
 		elseif message.group == hash("enemy") then
 			print("Enemy hited")
-			get_hited(self, enemy_damage)
+			get_hited(self, enemy_damage,10)
 			
 			self.enemys[message.other_id] = nil
 			go.delete(message.other_id)
 		elseif message.group == hash("bloco") then
 			print("Block hited")
-			get_hited(self, bloco_damage)
+			get_hited(self, bloco_damage,8)
 			
 			self.blocos[message.other_id] = nil
 			go.delete(message.other_id)
@@ -298,7 +296,7 @@ function checkSwipeDirection(self)
         totalSwipeDistanceLeft = beginX - endX
         if totalSwipeDistanceLeft > self.minSwipeDistance then
           print("Swiped Left")
-          swapSpeed = totalSwipeDistanceLeft
+          swapSpeed = totalSwipeDistanceLeft * 2
           print(totalSwipeDistanceLeft/10)
           doingSwap = totalSwipeDistanceLeft/10
           self.player_direction.x = -1
@@ -308,7 +306,7 @@ function checkSwipeDirection(self)
         totalSwipeDistanceRight = endX - beginX
         if totalSwipeDistanceRight > self.minSwipeDistance then
           print("Swiped Right")
-          swapSpeed = totalSwipeDistanceRight
+          swapSpeed = totalSwipeDistanceRight * 2
           print(totalSwipeDistanceRight/10)
           doingSwap = totalSwipeDistanceRight/10
           self.player_direction.x = 1
@@ -339,11 +337,11 @@ function get_point(self)
 end
 
 
-function get_hited(self, damage)
+function get_hited(self, damage, shake)
 	--do things
 	self.life = self.life - damage
 	--shake the screen to visual impact
-	msg.post("camera#baturinsky_shake", "shake", { shake = (damage*10) })
+	msg.post("camera#baturinsky_shake", "shake", { shake = (damage*shake) })
 	  --check if she is alive yet
 	if self.life <= 0 then
     	self.speed = 0
