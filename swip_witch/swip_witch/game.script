@@ -63,6 +63,7 @@ function init(self)
 end
 
 function final(self)
+	 
 	msg.post(".", "release_input_focus")
 	msg.post("camera", "release_camera_focus") --part of shake the camera
 end
@@ -236,13 +237,13 @@ function on_message(self, message_id, message, sender)
 			msg.post("#coinmagnetcollisionobject", "enable")
 		
 		elseif message.group == hash("enemy") then
-			print("Enemy hited")
+			--print("Enemy hited")
 			get_hited(self, enemy_damage,10)
 			
 			self.enemys[message.other_id] = nil
 			go.delete(message.other_id)
 		elseif message.group == hash("bloco") then
-			print("Block hited")
+			--print("Block hited")
 			get_hited(self, bloco_damage,8)
 			
 			self.blocos[message.other_id] = nil
@@ -267,19 +268,34 @@ function on_input(self, action_id, action)
 	end
   -- reading swipe
   if action_id == hash("click") then
+	  
+	  
+      local player_pos = go.get_position()
+	   if action.x > player_pos.x then
+    	  self.player_direction.x = 1
+      elseif action.x < player_pos.x then
+    	  self.player_direction.x = -1
+      else
+      	self.player_direction.x = 0
+      end
     if action.pressed then
-      bDoingTouch = true
+    	
+    	
+      --bDoingTouch = true
       beginX = action.x
       beginY = action.y
       startTime = os.clock()
+    
+     
+      
     elseif action.released  then
       endX = action.x
       endY = action.y
       if os.clock() - startTime < self.minSwipeTime then
-      	checkSwipeDirection(self);
+      	--checkSwipeDirection(self);
       end
       bDoingTouch = false
-      --self.player_direction.x = 0
+      self.player_direction.x = 0
     end
   end
 end
@@ -339,6 +355,10 @@ function get_point(self)
 	if self.life > max_life then
 		self.life = max_life
 	end
+	label.set_text("hud#score", "Score: ".. tostring(self.coins_collected or 0))
+	--game.set_text(game.get_node("score"), tostring(self.coins_collected or 0))
+	--msg.post("menu:/menu", "update_score", { score = self.coins_collected })
+	
 end
 
 
@@ -355,11 +375,18 @@ function get_hited(self, damage, shake)
 	if self.life <= 0 then
     	self.speed = 0
     	msg.post("controller:/controller", "show_menu")
-	end
+    end
+    
+    
 	
 end
+
+
 
 function update_time_distance(self, dt)
   self.distance = self.distance + math.floor(dt*self.speed)
   self.time = self.time + dt
+  
+  
+	label.set_text("hud#distance", "Distance: ".. tostring(math.floor(self.distance/20)))
 end

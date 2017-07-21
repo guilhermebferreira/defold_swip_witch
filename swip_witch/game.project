@@ -1,6 +1,7 @@
 [project]
 title = Swip Witch
 custom_resources = 
+dependencies = 
 
 [bootstrap]
 main_collection = /swip_witch/controller.collectionc

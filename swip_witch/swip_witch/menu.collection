@@ -17,6 +17,21 @@ embedded_instances {
   "    w: 1.0\n"
   "  }\n"
   "}\n"
+  "components {\n"
+  "  id: \"menu\"\n"
+  "  component: \"/swip_witch/menu.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
   ""
   position {
     x: 0.0
@@ -70,8 +85,8 @@ embedded_instances {
     w: 1.0
   }
   scale3 {
-    x: 3.0
-    y: 5.0
+    x: 6.0
+    y: 6.0
     z: 1.0
   }
 }
