@@ -58,6 +58,8 @@ function init(self)
 	self.magnet_timer = 0
 	msg.post("coinmagnet", "disable")
 	msg.post("#coinmagnetcollisionobject", "disable")
+	
+	--320 / 142 player initial position
 end
 
 function final(self)
@@ -334,12 +336,19 @@ function get_point(self)
 	--do things
 	self.coins_collected = self.coins_collected + 1
 	self.life = self.life + 1
+	if self.life > max_life then
+		self.life = max_life
+	end
 end
 
 
 function get_hited(self, damage, shake)
 	--do things
 	self.life = self.life - damage
+	if self.life < 0 then
+		self.life = 0
+	end
+	
 	--shake the screen to visual impact
 	msg.post("camera#baturinsky_shake", "shake", { shake = (damage*shake) })
 	  --check if she is alive yet

@@ -1,7 +1,7 @@
 function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
-	msg.post("#menuproxy", "load")
+	msg.post("#gameproxy", "load")
 end
 
 function final(self)
@@ -16,16 +16,22 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("show_game") then
 		print("show_game", sender)
 		msg.post("#gameproxy", "load")
-		msg.post("#menuproxy", "unload")		
+		msg.post("#menuproxy", "unload")	
+				
 	elseif message_id == hash("show_menu") then
 		print("show_menu", sender)
 		msg.post("#menuproxy", "load")
-		msg.post("#gameproxy", "unload")		
+		--msg.post("#gameproxy", "unload")		
 	elseif message_id == hash("proxy_loaded") then
 		print("proxy_loaded", sender)
 		msg.post(sender, "enable")
 	elseif message_id == hash("proxy_unloaded") then
 		print("proxy_unloaded", sender)
+	elseif message_id == hash("go_transition") then
+		print("in transition")
+		msg.post("#gameproxy", "unload")	
+		msg.post("controller:/controller", "show_game")
 	end
+	
 end
  

@@ -120,8 +120,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.0
-    y: 1.0
+    x: 2.0
+    y: 2.0
     z: 1.0
     w: 1.0
   }
@@ -165,6 +165,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 3
   overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
@@ -180,5 +181,5 @@ layers {
   name: "above"
 }
 material: "/builtins/materials/gui.material"
-adjust_reference: ADJUST_REFERENCE_PARENT
+adjust_reference: ADJUST_REFERENCE_LEGACY
 max_nodes: 512
