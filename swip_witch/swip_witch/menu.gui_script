@@ -11,10 +11,7 @@ end
 
 function on_input(self, action_id, action)
 	if action.pressed and gui.pick_node(gui.get_node("play/bg"), action.x, action.y) then
-		print("click play")
-		
-		--msg.post("controller:/controller", "show_game")
-		msg.post("controller:/controller", "go_transition")
+		msg.post("controller:/controller", "show_game")
 	end
 end
 
