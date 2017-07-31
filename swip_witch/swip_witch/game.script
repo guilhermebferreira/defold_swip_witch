@@ -70,11 +70,14 @@ end
 
 function update(self, dt)
 	
-	msg.post("@render:", "draw_text", { text = "life: ", position = vmath.vector3(20, 40, 0) } )
-	msg.post("@render:", "draw_text", { text = self.life, position = vmath.vector3(100, 40, 0) } )
+	msg.post("@render:", "draw_text", { text = "time: ", position = vmath.vector3(20, 40, 0) } )
+	msg.post("@render:", "draw_text", { text = math.floor(self.time), position = vmath.vector3(100, 40, 0) } )
 	
-	msg.post("@render:", "draw_text", { text = "points: ", position = vmath.vector3(20, 30, 0) } )
-	msg.post("@render:", "draw_text", { text = self.coins_collected, position = vmath.vector3(100, 30, 0) } )
+	msg.post("@render:", "draw_text", { text = "distance: ", position = vmath.vector3(20, 30, 0) } )
+	msg.post("@render:", "draw_text", { text = self.distance, position = vmath.vector3(100, 30, 0) } )
+	
+	
+	label.set_text("hud#life", "Life: ".. tostring(self.life or 0))
 	
 	update_time_distance(self, dt)
 	
