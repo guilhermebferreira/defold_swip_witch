@@ -45,7 +45,7 @@ function init(self)
 	msg.post("camera", "acquire_camera_focus") --part of shake the camera
 	math.randomseed(os.time())
 	self.coins_collected = 0
-	self.life = 10 --life is inscresse with potion and decresse when get damage
+	self.life = 25 --life is inscresse with potion and decresse when get damage
 	self.speed = 400
     self.time = 0 --time
     self.distance = 0 --distance
@@ -268,10 +268,10 @@ function on_input(self, action_id, action)
 	
 	
 	
-	label.set_text("info#action", "action: ", tostring(action_id))
-	label.set_text("info#info", "info: ", tostring(action.acc_x) ,", ", tostring(action.acc_y) ,", ",tostring(action.acc_z))
 	--if action then
 		if action.acc_x then
+			label.set_text("info#info", "info: ".. tostring(action.acc_x) ..", ".. tostring(action.acc_y) ..", "..tostring(action.acc_z))
+	
 			if action.acc_x > 0.1 then
 				self.player_direction.x = 1
 			elseif action.acc_x < -0.1 then
@@ -284,7 +284,7 @@ function on_input(self, action_id, action)
 	
 	
 	
-	--[=====[ 
+	
 	if action_id == hash("left") then
 		if action.released then
 			self.player_direction.x = 0
@@ -320,7 +320,7 @@ function on_input(self, action_id, action)
     end
 end
 
---]=====]
+
 end
 
 function on_reload(self)
