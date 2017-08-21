@@ -2,7 +2,7 @@
 
 Jogo com foco em dispositivos mobile elaborado a partir do exemplo Coin Magnet disponivel em [britzl/publicexamples](https://github.com/britzl/publicexamples/tree/master/examples/coin_magnet)
 
-![print screen do jogo rodando em um celular android](https://user-images.githubusercontent.com/5393392/29531502-42d699ea-867f-11e7-82b1-a3d14d27f00f.jpeg)
+<img src="https://user-images.githubusercontent.com/5393392/29531502-42d699ea-867f-11e7-82b1-a3d14d27f00f.jpeg" alt="print screen do jogo rodando em um celular android" width="400">
 
 ## Coin Magnet
 
