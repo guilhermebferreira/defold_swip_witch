@@ -1,3 +1,5 @@
+
+
 local backgrounds = { "bg1", "bg2", "bg3" }
 local background_size = 256 * 3
 local coin_spawn_interval = 0.15
@@ -22,6 +24,8 @@ local startTime = 0
 
 local xDistance
 local yDistance
+
+local savedData
  
  
 local swapSpeed = 500
@@ -63,12 +67,45 @@ function init(self)
 	msg.post("#coinmagnetcollisionobject", "disable")
 	
 	--320 / 142 player initial position
+	
+local my_file_path = sys.get_save_file("my_game", "data.json")
+local my_table = sys.load(my_file_path)
+if not my_table then
+	savedData = {}
+else
+	
+  	savedData = json.decode(my_table)
+  end
+  
+    print(decoded) -- example of getting data
+	
+	--local file = sys.load_resource("data.json")
+	--local decoded = {}
+	
+	--if file then
+	--	local decoded = json.decode(file)
+	--end
+	
+    
+	 
 end
 
 function final(self)
 	 
 	msg.post(".", "release_input_focus")
 	msg.post("camera", "release_camera_focus") --part of shake the camera
+	
+	local my_table = savedData
+	table.insert(my_table, '{"score": {"0":"123"}}')
+	local my_file_path = sys.get_save_file("my_game", "data.json")
+	if not sys.save(my_file_path, my_table) then
+		-- Alert user that the data could not be saved
+		print('data could not be saved')
+	else
+		print('saved at '..tostring(my_file_path))
+	end
+	
+
 end
 
 function update(self, dt)
@@ -382,3 +419,5 @@ function update_time_distance(self, dt)
   
 	label.set_text("hud#distance", "Distance: ".. tostring(math.floor(self.distance/20)))
 end
+
+
