@@ -12,10 +12,10 @@ Asked on the forum: https://forum.defold.com/t/jill-endless-run/2950/48?u=britzl
 
 O jogo foi modificado para utilizar recursos como:
 
-	- acelerometro: 
-		- utilizado para movimentação horizontal do personagem na tela
-	- shake screen: 
-		- utilizado para enfatizar o dano recebido pelo personagem
+- acelerometro: 
+	- utilizado para movimentação horizontal do personagem na tela
+- shake screen: 
+	- utilizado para enfatizar o dano recebido pelo personagem
 
 ## Framework
 
